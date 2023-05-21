@@ -3,8 +3,14 @@
 namespace rtt {
 namespace batteries {
 
-static const std::regex RE_ERR ("\\n\\s*(.*?error.*?)\\n", std::regex::icase);
-static const std::regex RE_WARN ("\\n\\s*(.*?warning.*?)\\n", std::regex::icase);
+static bool findstring(const std::string & s, const std::string & what)
+{
+    auto it = std::search(s.begin(), s.end(), what.begin(), what.end(),
+        [](unsigned char c1, unsigned char c2)
+        { return std::toupper(c1) == std::toupper(c2); }
+    );
+    return (it != s.end());
+}
 
 void BatteryOutput::appendStdOut(const std::string & stdOut) {
     detectionDone = false;
@@ -43,23 +49,16 @@ void BatteryOutput::detectErrsWarnsInStdOut() {
     /* Detect warnings and errors here.
      * Detection happens only in stdOut variable. */
 
-
-    std::smatch match;
-    auto end =       std::sregex_iterator();
-    auto errBegin =  std::sregex_iterator(stdOut.begin() , stdOut.end(), RE_ERR);
-    auto warnBegin = std::sregex_iterator(stdOut.begin() , stdOut.end(), RE_WARN);
+    std::istringstream input(stdOut);
 
     errors.clear();
     warnings.clear();
 
-    for( ; errBegin != end ; ++errBegin) {
-        match = *errBegin;
-        errors.push_back(match[1].str());
-    }
-
-    for( ; warnBegin != end ; ++ warnBegin) {
-        match = *warnBegin;
-        warnings.push_back(match[1].str());
+    for (std::string line; std::getline(input, line); ) {
+        if (findstring(line, "warning"))
+            warnings.push_back(line);
+        if (findstring(line, "error"))
+            errors.push_back(line);
     }
 
     detectionDone = true;
