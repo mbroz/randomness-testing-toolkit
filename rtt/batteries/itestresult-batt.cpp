@@ -8,7 +8,7 @@ namespace rtt {
 namespace batteries {
 
 std::unique_ptr<ITestResult> ITestResult::getInstance(
-        const std::vector<ITest *> & tests) {
+        const std::vector<ITest *> & tests, bool stat) {
     if(tests.empty())
         raiseBugException("empty tests");
 
@@ -16,10 +16,10 @@ std::unique_ptr<ITestResult> ITestResult::getInstance(
 
     switch(tests.at(0)->getBatteryArg().getBatteryId()) {
         case Constants::BatteryID::NIST_STS:
-            rval = niststs::TestResult::getInstance(tests);
+            rval = niststs::TestResult::getInstance(tests, stat);
             break;
         case Constants::BatteryID::DIEHARDER:
-            rval = dieharder::TestResult::getInstance(tests);
+            rval = dieharder::TestResult::getInstance(tests, stat);
             break;
         case Constants::BatteryID::TU01_SMALLCRUSH:
         case Constants::BatteryID::TU01_CRUSH:

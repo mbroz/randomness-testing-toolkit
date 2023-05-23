@@ -14,7 +14,7 @@ class Battery : public IBattery {
 public:
     static std::unique_ptr<Battery> getInstance(const GlobalContainer & container);
 
-    std::vector<std::unique_ptr<ITestResult>> getTestResults() const;
+    std::vector<std::unique_ptr<ITestResult>> getTestResults(bool stat) const;
 private:
     /*
     ===============

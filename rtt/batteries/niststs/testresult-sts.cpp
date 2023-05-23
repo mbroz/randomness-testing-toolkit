@@ -7,7 +7,7 @@ namespace batteries {
 namespace niststs {
 
 std::unique_ptr<TestResult> TestResult::getInstance(
-        const std::vector<ITest *> & tests) {
+        const std::vector<ITest *> & tests, bool stat) {
     if(tests.empty())
         raiseBugException("empty tests");
 
@@ -37,8 +37,8 @@ std::unique_ptr<TestResult> TestResult::getInstance(
                     continue;
                 }
                 tmpStatistics.push_back(result::Statistic::getInstance(
-                                            "Chi-Square",
-                                            chi2_stat(subTestPVals)));
+                                            stat ? "Chi-Square" : "(skipped)",
+                                            stat ? chi2_stat(subTestPVals) : 0));
                 tmpSubTestResults.push_back(result::SubTestResult::getInstance(
                                                 tmpStatistics, subTestPVals));
                 tmpStatistics.clear();

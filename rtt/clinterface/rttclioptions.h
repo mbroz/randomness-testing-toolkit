@@ -135,6 +135,13 @@ public:
     bool getSkipPvalues() const;
     bool hasSkipPvalues() const;
 
+    /**
+     * @brief getSkipStatistic
+     * @return skip statistic storage procedure
+     */
+    bool getSkipStatistic() const;
+    bool hasSkipStatistic() const;
+
 private:
     static const std::string BATTERY_ARG_NAME;
     static const std::string SETTINGS_FILE_ARG_NAME;
@@ -148,6 +155,7 @@ private:
     static const std::string MYSQL_DB_HOST_ARG_NAME;
     static const std::string MYSQL_DB_PORT_ARG_NAME;
     static const std::string SKIP_PVALUES;
+    static const std::string SKIP_STATISTIC;
     std::vector<tArgumentTypes> arguments = {
         ClArgument<BatteryArg>(BATTERY_ARG_NAME),                    /* Battery */
         ClArgument<std::string>(DATA_FILE_ARG_NAME),                 /* Input data file */
@@ -160,7 +168,8 @@ private:
         ClArgument<std::uint64_t>(MYSQL_DB_EID_ARG_NAME, true),      /* (opt) Experiment ID  */
         ClArgument<std::string>(MYSQL_DB_HOST_ARG_NAME, true),       /* (opt) MySQL Host name  */
         ClArgument<std::uint64_t>(MYSQL_DB_PORT_ARG_NAME, true),      /* (opt) MySQL port  */
-        ClArgument<int>(SKIP_PVALUES, true)                         /* skip pvalue storage  */
+        ClArgument<int>(SKIP_PVALUES, true),                        /* skip pvalue storage  */
+        ClArgument<int>(SKIP_STATISTIC, true)                  /* skip calculation of top level statistic (test will fail)  */
     };
 
     std::string objectInfo = "CL Arguments Parser";

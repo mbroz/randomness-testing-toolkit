@@ -54,7 +54,7 @@ int main (int argc , char * argv[]) try {
             /* Executing analysis */
             battery->runTests();
             /* Obtaining and storing results */
-            const auto & results = battery->getTestResults();;
+            const auto & results = battery->getTestResults(!gc.getRttCliOptions()->getSkipStatistic());
             storage->checkStorage();
             storage->writeResults(Utils::getRawPtrs(results));
             /* And we are done. */

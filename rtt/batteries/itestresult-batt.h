@@ -20,7 +20,7 @@ public:
      * @return initialized instance
      */
     static std::unique_ptr<ITestResult> getInstance(
-            const std::vector<ITest *> & tests);
+            const std::vector<ITest *> & tests, bool stat);
 
     /**
      * @brief getVariantResults

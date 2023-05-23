@@ -12,7 +12,7 @@ namespace niststs {
 class TestResult : public ITestResult {
 public:
     static std::unique_ptr<TestResult> getInstance(
-            const std::vector<ITest *> & tests);
+            const std::vector<ITest *> & tests, bool test);
 private:
     TestResult(Logger * logger , std::string testName)
         : ITestResult(logger , testName)

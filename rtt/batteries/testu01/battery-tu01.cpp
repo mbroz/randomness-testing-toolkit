@@ -11,7 +11,7 @@ std::unique_ptr<Battery> Battery::getInstance(const GlobalContainer & container)
     return b;
 }
 
-std::vector<std::unique_ptr<ITestResult>> Battery::getTestResults() const {
+std::vector<std::unique_ptr<ITestResult>> Battery::getTestResults(bool stat) const {
     if(!executed)
         throw RTTException(objectInfo, Strings::BATT_ERR_NO_EXEC_PROC);
 
@@ -28,14 +28,14 @@ std::vector<std::unique_ptr<ITestResult>> Battery::getTestResults() const {
         if(currTestName == tests.at(i)->getLogicName()) {
             testBatch.push_back(tests.at(i).get());
         } else {
-            results.push_back(ITestResult::getInstance(testBatch));
+            results.push_back(ITestResult::getInstance(testBatch, stat));
             testBatch.clear();
             currTestName = tests.at(i)->getLogicName();
             testBatch.push_back(tests.at(i).get());
         }
 
         if(i + 1 == tests.size()) {
-            results.push_back(ITestResult::getInstance(testBatch));
+            results.push_back(ITestResult::getInstance(testBatch, stat));
         }
     }
 

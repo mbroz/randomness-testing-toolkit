@@ -34,7 +34,7 @@ public:
      * @return Results of the executed tests, will throw
      * error if the Battery wasn't executed before.
      */
-    virtual std::vector<std::unique_ptr<ITestResult>> getTestResults() const = 0;
+    virtual std::vector<std::unique_ptr<ITestResult>> getTestResults(bool stat) const = 0;
 
 protected:
     IBattery(const GlobalContainer & cont);

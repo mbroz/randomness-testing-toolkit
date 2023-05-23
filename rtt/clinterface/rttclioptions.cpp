@@ -15,6 +15,7 @@ const std::string RTTCliOptions::MYSQL_DB_EID_ARG_NAME       = "--eid";
 const std::string RTTCliOptions::MYSQL_DB_HOST_ARG_NAME      = "--db-host";
 const std::string RTTCliOptions::MYSQL_DB_PORT_ARG_NAME      = "--db-port";
 const std::string RTTCliOptions::SKIP_PVALUES                = "--skip-pvalues";
+const std::string RTTCliOptions::SKIP_STATISTIC              = "--skip-stat";
 
 RTTCliOptions RTTCliOptions::getInstance(int argc, char * argv[]) {
     RTTCliOptions options;
@@ -114,6 +115,9 @@ std::string RTTCliOptions::getUsage() {
     rval << "--db-port <port> (Optional) Override MySQL port from config file.    " << std::endl;
     rval << "                                                                     " << std::endl;
     rval << "--skip-pvalues <1> (Optional) Skip pvalue storage.                   " << std::endl;
+    rval << "                                                                     " << std::endl;
+    rval << "--skip-stat <1> (Optional) Skip top level statistic calculation.     " << std::endl;
+    rval << "                Test will fail, use for p-values output only.        " << std::endl;
     rval << "=====================================================================" << std::endl;
     return rval.str();
 }
@@ -199,6 +203,13 @@ bool RTTCliOptions::getSkipPvalues() const {
 
 bool RTTCliOptions::hasSkipPvalues() const {
     return isArgumentSet(SKIP_PVALUES);
+}
+
+bool RTTCliOptions::getSkipStatistic() const {
+    if (isArgumentSet(SKIP_STATISTIC))
+        return getArgumentValue<int>(SKIP_STATISTIC) > 0;
+    else
+        return false;
 }
 
 bool RTTCliOptions::isArgumentSet(const std::string & argName) const {

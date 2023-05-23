@@ -11,13 +11,13 @@ std::unique_ptr<Battery> Battery::getInstance(const GlobalContainer & container)
     return b;
 }
 
-std::vector<std::unique_ptr<ITestResult>> Battery::getTestResults() const {
+std::vector<std::unique_ptr<ITestResult>> Battery::getTestResults(bool stat) const {
     if(!executed)
         throw RTTException(objectInfo , Strings::BATT_ERR_NO_EXEC_PROC);
 
     std::vector<std::unique_ptr<ITestResult>> results(tests.size());
     std::transform(tests.begin(), tests.end(), results.begin(),
-                   [](const auto & el){ return ITestResult::getInstance({el.get()}); });
+                   [&](const auto & el){ return ITestResult::getInstance({el.get()}, stat); });
 
     return results;
 }

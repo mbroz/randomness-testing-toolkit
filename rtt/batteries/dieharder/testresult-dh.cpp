@@ -5,7 +5,7 @@ namespace batteries {
 namespace dieharder {
 
 std::unique_ptr<TestResult> TestResult::getInstance(
-        const std::vector<ITest *> & tests) {
+        const std::vector<ITest *> & tests, bool stat) {
     if(tests.empty())
         raiseBugException("empty tests");
 
@@ -54,9 +54,10 @@ std::unique_ptr<TestResult> TestResult::getInstance(
                     std::smatch pvalMatch = *pValIt;
                     tmpPVals.push_back(Utils::strtod(pvalMatch[1].str()));
                 }
+
                 tmpStatistics.push_back(result::Statistic::getInstance(
-                                            "Kolmogorov-Smirnov",
-                                            r->kstest(tmpPVals)));
+                                            stat ? "Kolmogorov-Smirnov" : "(skipped)",
+                                            stat ? r->kstest(tmpPVals) : 0));
                 tmpSubTestResults.push_back(result::SubTestResult::getInstance(
                                                 tmpStatistics, tmpPVals));
                 tmpPVals.clear();
